@@ -33,3 +33,18 @@ y = advertising['Sales']
 # train-test-split this gives following 4 values
 X_train,X_test,y_train,y_test = train_test_split(X,y,train_size=0.70,random_state=100) #0.70 - means 70-30
 print(X_train.shape,X_test.shape,y_train.shape,y_test.shape) ## Original record count 200. 70% of will come 140
+
+# training the model
+## Stats model does not come with c (predictor) (y=mx+c) hence following adds
+X_train_sm = sm.add_constant(X_train) 
+print(X_train_sm)
+
+##fitting the mode (giving the traimnig set X_train and y_train)
+## OLS - ORDINARY LIST SUQARES
+lr = sm.OLS(y_train,X_train_sm) #3 This cvreates a linear regression object
+lr_model = lr.fit()
+print(lr_model.params)
+
+## summary method will give lot of other information
+print(lr_model.summary())
+ 
