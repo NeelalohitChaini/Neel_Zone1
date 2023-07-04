@@ -10,10 +10,12 @@ import matplotlib.pyplot as plt
 ## sklearn is used mostly by technology guys
 import statsmodels
 import statsmodels.api as sm
+import seaborn as sns
+
 import sklearn
 from sklearn.model_selection import train_test_split
-
-import seaborn as sns
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
 
 # Read the given CSV file, and view some sample records
 advertising = pd.read_csv("c:/Users/neela/Desktop/Pyhon/advertising.csv")
@@ -83,4 +85,31 @@ res = y_train - y_train_pred
 plt.figure()
 sns.distplot(res)
 plt.title("Residual Plot")
+plt.show()
+## Imp - look for patterns in the residual (we should not be able to identify)
+plt.scatter(X_train,res)
+plt.show()
+
+##Step - 4 - Prediction and Evaluation on Test set
+##  4.1. Make predictions on the test set (y_test_pred)
+##  4.2. Evaluate the model, r-squared on the test set
+
+## Stats model does not come with c (predictor) (y=mx+c) hence following adds
+X_test_sm = sm.add_constant(X_test) 
+y_test_pred = lr_model.predict(X_test_sm)
+
+##Evaluate the model
+## r-squared
+r2 = r2_score(y_true=y_test,y_pred=y_test_pred)  ## THis will give 0.792103160125
+print(r2)
+
+## We can check the r-squared on the train set as well , whcih was doen using stats model
+r2_train = r2_score(y_true=y_train,y_pred=y_train_pred) ## THis will give 0.815793313648 same as of stasmodel
+print(r2_train)
+
+## Inference - 0.792103160125 kis within 5% of 0.815793313648 so it shows stability. Means what the model
+## has learnt on trainig set , it is able to generalize on the unseen test set as well
+
+plt.scatter(X_test,y_test) ## THis will give a scatter plot between X_train & y_train
+plt.plot(X_test,y_test_pred,'r') ## 'r' - will make the line in red colur
 plt.show()
